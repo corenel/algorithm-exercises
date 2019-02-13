@@ -9,7 +9,7 @@ import unittest
 
 class ListNode:
 
-    def __init__(self, val) -> None:
+    def __init__(self, val):
         """
         Node for singly linked list
 
@@ -21,7 +21,7 @@ class ListNode:
 
 
 class DListNode:
-    def __init__(self, val) -> None:
+    def __init__(self, val):
         """
         Node of doubly linked list
 
@@ -35,7 +35,7 @@ class DListNode:
 
 class LinkedList:
 
-    def __init__(self, singly=True, head=None) -> None:
+    def __init__(self, singly=True, head=None):
         """
         Linked list
 
@@ -93,6 +93,24 @@ class LinkedList:
                 break
             curr = curr.next
 
+    def has_circle(self):
+        """
+        Check whether or not this linked list has a circle by slow and fast pointer
+
+        :return: whether or not this linked list has a circle
+        :rtype: bool
+        """
+        slow = self.get_head()
+        fast = self.get_head()
+        while slow is not None and fast is not None:
+            slow = slow.next
+            fast = fast.next
+            if fast is not None:
+                fast = fast.next
+            if fast == slow:
+                return True
+        return False
+
     def append(self, node):
         # initialize dummy head node
         if self.dummy_head.next is None:
@@ -124,9 +142,9 @@ class LinkedList:
         for val in val_list:
             self.append(self.generate_node(val))
 
-    def pop(self, index):
+    def remove(self, index):
         """
-        Pop item by index
+        Remove item by index
 
         :param index: index of node to pop
         :type index: int
@@ -143,7 +161,7 @@ class LinkedList:
         Reverse linked list
 
         :return: head node of reversed linked list
-        :rtype: ListNode or DListNone
+        :rtype: Union[ListNode, DListNone]
         """
         head = self.get_head()
 
@@ -173,7 +191,7 @@ class LinkedList:
         Traverse linked list
 
         :return: list of nodes
-        :rtype: list
+        :rtype: List
         """
         node_list = []
         head = self.get_head()
@@ -206,6 +224,31 @@ class LinkedList:
 
         raise IndexError
 
+    def find_middle_node(self):
+        """
+        Find middle node by slow and fast pointer
+
+        :return:
+        :rtype:
+        """
+        slow = self.get_head()
+        fast = self.get_head()
+
+        # linked list only has one node
+        if fast is not None and fast.next is None:
+            return slow
+
+        while slow is not None and fast is not None:
+            fast = fast.next
+            if fast is not None:
+                fast = fast.next
+            slow = slow.next
+
+            if fast is not None and fast.next is None:
+                break
+
+        return slow
+
 
 def remove_list_node(curr, prev=None):
     if isinstance(curr, DListNode):
@@ -221,55 +264,85 @@ def remove_list_node(curr, prev=None):
         raise RuntimeError('Invalid operation to delete node')
 
 
+def generate_test_linked_list(size=5, singly=False):
+    """
+    Generate node list for test case
+
+    :param size: size of linked list
+    :type size: int
+    :param singly: whether or not this linked list is singly
+    :type singly: bool
+    :return: value list and generated linked list
+    """
+    assert size >= 1
+    val_list = [i for i in range(size)]
+    node_list = LinkedList(singly=singly)
+    node_list.append_val_list(val_list)
+
+    return val_list, node_list
+
+
 class TestLinkedList(unittest.TestCase):
 
-    def test_singly_linked_list(self):
-        val_list = [1, 2, 3, 4, 5]
-        node_list = LinkedList(singly=True)
-        # test appending
-        node_list.append_val_list(val_list)
-        self.assertListEqual(val_list, node_list.to_list())
-        # test reversing
-        val_list_reversed = val_list[::-1]
-        node_list_reversed = LinkedList(singly=node_list.singly, head=node_list.reverse())
-        self.assertListEqual(val_list_reversed, node_list_reversed.to_list())
-        # test removing node
-        val_list_reversed.pop(2)
-        node_list_reversed.pop(2)
-        self.assertListEqual(val_list_reversed, node_list_reversed.to_list())
-        # test removing head node
-        val_list_reversed.pop(0)
-        node_list_reversed.pop(0)
-        self.assertListEqual(val_list_reversed, node_list_reversed.to_list())
-        # test removing tail node
-        node_list_reversed.pop(len(val_list_reversed) - 1)
-        val_list_reversed.pop(-1)
-        self.assertListEqual(val_list_reversed, node_list_reversed.to_list())
-        self.assertEqual(None, node_list_reversed.traverse()[-1].next)
+    def test_append_linked_list(self):
+        val_list, snode_list = generate_test_linked_list(singly=True)
+        _, dnode_list = generate_test_linked_list(singly=False)
 
-    def test_doubly_linked_list(self):
-        val_list = [1, 2, 3, 4, 5]
-        node_list = LinkedList(singly=False)
-        # test appending
-        node_list.append_val_list(val_list)
-        self.assertListEqual(val_list, node_list.to_list())
-        # test reversing
-        val_list_reversed = val_list[::-1]
-        node_list_reversed = LinkedList(singly=node_list.singly, head=node_list.reverse())
-        self.assertListEqual(val_list_reversed, node_list_reversed.to_list())
-        # test removing node
-        val_list_reversed.pop(2)
-        node_list_reversed.pop(2)
-        self.assertListEqual(val_list_reversed, node_list_reversed.to_list())
-        # test removing head node
-        val_list_reversed.pop(0)
-        node_list_reversed.pop(0)
-        self.assertListEqual(val_list_reversed, node_list_reversed.to_list())
-        # test removing tail node
-        node_list_reversed.pop(len(val_list_reversed) - 1)
-        val_list_reversed.pop(-1)
-        self.assertListEqual(val_list_reversed, node_list_reversed.to_list())
-        self.assertEqual(None, node_list_reversed.traverse()[-1].next)
+        for node_list in (snode_list, dnode_list):
+            self.assertListEqual(val_list, node_list.to_list())
+
+    def test_reverse_linked_list(self):
+        val_list, snode_list = generate_test_linked_list(singly=True)
+        _, dnode_list = generate_test_linked_list(singly=False)
+
+        for node_list in (snode_list, dnode_list):
+            val_list_reversed = val_list[::-1]
+            node_list_reversed = LinkedList(singly=node_list.singly, head=node_list.reverse())
+            self.assertListEqual(val_list_reversed, node_list_reversed.to_list())
+
+    def test_remove_node(self):
+        original_val_list, snode_list = generate_test_linked_list(singly=True)
+        _, dnode_list = generate_test_linked_list(singly=False)
+
+        for node_list in (snode_list, dnode_list):
+            val_list = original_val_list[:]
+            # test removing node
+            val_list.pop(2)
+            node_list.remove(2)
+            self.assertListEqual(val_list, node_list.to_list())
+            # test removing head node
+            val_list.pop(0)
+            node_list.remove(0)
+            self.assertListEqual(val_list, node_list.to_list())
+            # test removing tail node
+            node_list.remove(len(val_list) - 1)
+            val_list.pop(-1)
+            self.assertListEqual(val_list, node_list.to_list())
+            self.assertEqual(None, node_list.traverse()[-1].next)
+
+    def test_circle_linked_list(self):
+        _, snode_list = generate_test_linked_list(singly=True)
+        _, dnode_list = generate_test_linked_list(singly=False)
+
+        for node_list in (snode_list, dnode_list):
+            # no circle
+            self.assertFalse(node_list.has_circle())
+            # add circle manually
+            node_list.traverse()[-1].next = node_list.get_head()
+            self.assertTrue(node_list.has_circle())
+            # eliminate circularity
+            node_list.eliminate_circularity()
+            self.assertFalse(node_list.has_circle())
+
+    def test_find_middle_node(self):
+        size_to_test = [1, 5, 10, 11]
+        for size in size_to_test:
+            val_list, snode_list = generate_test_linked_list(size=size, singly=True)
+            _, dnode_list = generate_test_linked_list(size=size, singly=False)
+
+            for node_list in (snode_list, dnode_list):
+                self.assertEqual(val_list[len(val_list) // 2],
+                                 node_list.find_middle_node().val)
 
 
 if __name__ == '__main__':
