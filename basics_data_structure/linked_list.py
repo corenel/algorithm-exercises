@@ -29,8 +29,7 @@ class DListNode:
         :type val: Any
         """
         self.val = val
-        self.next = None
-        self.prev = None
+        self.next = self.prev = None
 
 
 class LinkedList:

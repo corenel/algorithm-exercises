@@ -6,6 +6,8 @@ https://algorithm.yuanbin.me/zh-hans/basics_data_structure/binary_tree.html
 
 import unittest
 
+from collections import deque
+
 
 class TreeNode:
 
@@ -17,7 +19,7 @@ class TreeNode:
         :type val: Any
         """
         self.val = val
-        self.left, self.right = None, None
+        self.left = self.right = None
 
     def add_child(self, child):
         if self.left is None:
@@ -167,9 +169,9 @@ def breadth_first_traverse(root):
     :rtype: list[TreeNode]
     """
     node_list = []
-    node_stack = [root]
+    node_stack = deque([root])
     while node_stack:
-        curr = node_stack.pop(0)
+        curr = node_stack.popleft()
         node_list.append(curr)
         for child in curr.get_children():
             node_stack.append(child)
@@ -376,3 +378,7 @@ class TestBinaryTree(unittest.TestCase):
         bst.delete(TreeNode(50))
         val_list = to_list(bst.depth_first_traverse('inorder'))
         self.assertListEqual([30, 60, 80], val_list)
+
+
+if __name__ == '__main__':
+    unittest.main()
