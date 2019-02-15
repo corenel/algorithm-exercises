@@ -84,7 +84,7 @@ class BinarySearchTree(BinaryTree):
         """
         return search_in_bst(self.root, key)
 
-    def insert(self, node):
+    def insert(self, node) -> None:
         """
         Insert node in the binary search tree
 
@@ -92,6 +92,15 @@ class BinarySearchTree(BinaryTree):
         :type node: TreeNode
         """
         self.root = insert_in_bst(self.root, node)
+
+    def delete(self, node) -> None:
+        """
+        Delete node from the binary search tree
+
+        :param node: node to insert
+        :type node: TreeNode
+        """
+        self.root = delete_in_bst(self.root, node)
 
 
 def depth_first_traverse_preorder(root):
@@ -215,8 +224,54 @@ def insert_in_bst(root, node):
     return root
 
 
-def delete_in_bst(node):
-    pass
+def get_min_value_node(root):
+    """
+    Get node with minimum value in given binary search tree
+
+    :param root: root node of the binary search tree
+    :type root: TreeNode
+    :return: node with minimum value
+    :rtype: TreeNode
+    """
+    curr = root
+    while curr.left is not None:
+        curr = curr.left
+    return curr
+
+
+def delete_in_bst(root, node):
+    """
+    Delete node from the binary search tree
+
+    :param root: root node of the binary search tree
+    :type root: TreeNode
+    :param node: node to insert
+    :type node: TreeNode
+    :return: root node of operated binary search tree
+    :rtype: TreeNode
+    """
+    if root is None:
+        return root
+
+    if root.val < node.val:
+        root.right = delete_in_bst(root.right, node)
+    elif root.val > node.val:
+        root.left = delete_in_bst(root.left, node)
+    else:
+        if root.left is None:
+            temp = root.right
+            del root
+            return temp
+        elif root.right is None:
+            temp = root.left
+            del root
+            return temp
+        else:
+            min_node = get_min_value_node(root.right)
+            root.val = min_node.val
+            root.right = delete_in_bst(root.right, min_node)
+
+    return root
 
 
 def generate_test_binary_tree():
@@ -304,4 +359,20 @@ class TestBinaryTree(unittest.TestCase):
         self.assertListEqual([20, 30, 40, 50, 60, 70, 80], val_list)
 
     def test_binary_search_tree_delete(self):
-        pass
+        bst = generate_test_binary_search_tree()
+        # delete lesf node
+        bst.delete(TreeNode(20))
+        val_list = to_list(bst.depth_first_traverse('inorder'))
+        self.assertListEqual([30, 40, 50, 60, 70, 80], val_list)
+        # delete node with two child
+        bst.delete(TreeNode(40))
+        val_list = to_list(bst.depth_first_traverse('inorder'))
+        self.assertListEqual([30, 50, 60, 70, 80], val_list)
+        # delete node with two child
+        bst.delete(TreeNode(70))
+        val_list = to_list(bst.depth_first_traverse('inorder'))
+        self.assertListEqual([30, 50, 60, 80], val_list)
+        # delete root node
+        bst.delete(TreeNode(50))
+        val_list = to_list(bst.depth_first_traverse('inorder'))
+        self.assertListEqual([30, 60, 80], val_list)
