@@ -1,20 +1,28 @@
 """
 Bubble Sort
 
-https://algorithm.yuanbin.me/zh-hans/basics_sorting/bubble_sort.html
+- https://algorithm.yuanbin.me/zh-hans/basics_sorting/bubble_sort.html
+- https://www.geeksforgeeks.org/bubble-sort/
 """
 
 import unittest
-from random import shuffle
+
+from .util import generate_random_array
 
 
 def bubble_sort(array):
     """
     Sort array in ascending order by bubble sort
 
-    Avg Time: O(n^2)
-    Worst Time: O(n^2)
-    Space: O(1)
+    Bubble sort, sometimes referred to as sinking sort,
+    is a simple sorting algorithm that repeatedly steps
+    through the list, compares adjacent pairs and swaps
+    them if they are in the wrong order.
+
+    Best-case time performance: O(n)
+    Worst-case time performance: O(n^2)
+    Average time performance: O(n^2)
+    Worst-case space complexity: O(1)
 
     :param array: given unsorted array
     :type array: list
@@ -31,8 +39,7 @@ def bubble_sort(array):
 class TestBubbleSort(unittest.TestCase):
 
     def test_bubble_sort(self):
-        val_list = [i for i in range(10)]
-        shuffle(val_list)
+        val_list = generate_random_array()
         self.assertListEqual(sorted(val_list), bubble_sort(val_list))
 
 
