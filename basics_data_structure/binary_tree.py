@@ -40,6 +40,9 @@ class TreeNode:
                     if child is not None]
         return children
 
+    def __repr__(self):
+        return 'Node {}'.format(self.val)
+
 
 class BinaryTree:
 
