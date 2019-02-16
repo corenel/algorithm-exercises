@@ -18,10 +18,10 @@ def selection_sort(array):
     finding the minimum element (considering ascending order)
     from unsorted part and putting it at the beginning.
 
-    Best-case time performance: O(n^2)
-    Worst-case time performance: O(n^2)
-    Average time performance: O(n^2)
-    Worst-case space complexity: O(1)
+    - Best-case time performance: O(n^2)
+    - Worst-case time performance: O(n^2)
+    - Average time performance: O(n^2)
+    - Worst-case space complexity: O(1)
 
     :param array: given unsorted array
     :type array: list
