@@ -8,8 +8,6 @@ Heap
 
 import unittest
 
-from .binary_tree import TreeNode
-
 
 class MaxHeap:
 
@@ -31,20 +29,60 @@ class MaxHeap:
         self._heapify()
 
     def _less(self, i, j):
+        """
+        Compare values of two given nodes
+
+        :param i: index of the first node
+        :type i: int
+        :param j: index of the second node
+        :type j: int
+        :return: whether or not node i is less than node j
+        :rtype: bool
+        """
         return self._heap[i] < self._heap[j]
 
-    def _exchange(self, i, j):
+    def _exchange(self, i, j) -> None:
+        """
+        Exchange two given nodes
+
+        :param i: index of the first node
+        :type i: int
+        :param j: index of the second node
+        :type j: int
+        """
         self._heap[i], self._heap[j] = self._heap[j], self._heap[i]
 
     @staticmethod
     def _father(idx):
+        """
+        Get index of father node
+
+        :param idx: index of child node
+        :type idx: int
+        :return: index of father node
+        :rtype: int
+        """
         return (idx - 1) // 2
 
     @staticmethod
     def _child(idx):
+        """
+        Get index of children node
+
+        :param idx: index of father node
+        :type idx: int
+        :return: index of children node
+        :rtype: int
+        """
         return 2 * idx + 1, 2 * idx + 2
 
-    def _sink(self, idx):
+    def _sink(self, idx) -> None:
+        """
+        Sink from top to bottom
+
+        :param idx: index of starting node
+        :type idx: int
+        """
         max_idx = idx
         left_child, right_child = self._child(idx)
         if left_child < len(self) and self._less(max_idx, left_child):
@@ -55,7 +93,13 @@ class MaxHeap:
             self._exchange(idx, max_idx)
             self._sink(max_idx)
 
-    def _swim(self, idx):
+    def _swim(self, idx) -> None:
+        """
+        Swim from bottom to top
+
+        :param idx: index of starting node
+        :type idx: int
+        """
         if idx == 0:
             return
         if self._less(self._father(idx), idx):
@@ -63,14 +107,29 @@ class MaxHeap:
             self._swim(self._father(idx))
 
     def _heapify(self):
+        """
+        Heapify given array
+        """
         for idx in range(len(self) // 2, -1, -1):
             self._sink(idx)
 
     def push(self, node):
+        """
+        Push node to the heap
+
+        :param node: node to append
+        :type node: Any
+        """
         self._heap.append(node)
         self._swim(len(self._heap) - 1)
 
     def pop(self):
+        """
+        Pop the root node from heap
+
+        :return: the root node from heap
+        :rtype: Any
+        """
         self._exchange(0, -1)
         node = self._heap.pop()
         self._sink(0)
