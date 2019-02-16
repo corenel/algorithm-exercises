@@ -3,6 +3,7 @@ Insertion Sort
 
 - https://algorithm.yuanbin.me/zh-hans/basics_sorting/insertion_sort.html
 - https://www.geeksforgeeks.org/insertion-sort/
+- https://www.geeksforgeeks.org/shellsort/
 """
 
 import unittest
