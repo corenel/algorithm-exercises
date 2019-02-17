@@ -66,7 +66,7 @@ def merge_sort(array):
 
 class TestMergeSort(unittest.TestCase):
 
-    def test_insertion_sort(self):
+    def test_merge_sort(self):
         val_list = generate_random_array()
         self.assertListEqual(sorted(val_list), merge_sort(val_list))
 
