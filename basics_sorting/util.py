@@ -13,3 +13,4 @@ def generate_random_array(length=10):
     val_list = [i for i in range(length)]
     shuffle(val_list)
     return val_list
+

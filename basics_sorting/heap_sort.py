@@ -40,9 +40,9 @@ def heap_sort(array):
     return array_sorted
 
 
-class TestMergeSort(unittest.TestCase):
+class TestHeapSort(unittest.TestCase):
 
-    def test_merge_sort(self):
+    def test_heap_sort(self):
         val_list = generate_random_array()
         self.assertListEqual(sorted(val_list), heap_sort(val_list))
 
