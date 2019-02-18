@@ -10,7 +10,24 @@ import unittest
 from .util import generate_random_string, generate_random_array
 
 
-def counting_sort(array, num_max=256):
+def to_idx(elem):
+    """
+    Convert element to index
+
+    :param elem: element in the input array
+    :type elem: int or str
+    :return: corresponding index of given element
+    :rtype: int
+    """
+    if isinstance(elem, str) and len(elem) == 1:
+        return ord(elem)
+    elif isinstance(elem, int):
+        return elem
+    else:
+        raise NotImplementedError
+
+
+def counting_sort(array, num_max=256, ord_func=to_idx):
     """
     Sort array in ascending order by counting sort
 
@@ -23,42 +40,30 @@ def counting_sort(array, num_max=256):
     - Worst-case time performance: O(n+k)
     - Worst-case space complexity: O(n+k)
 
+    where k is the range of the non-negative key values
+
     :param array: given unsorted array
     :type array: list[str]
     :param num_max: maximum number of elements
     :type num_max: int
+    :param ord_func: function to convert element into index
+    :type ord_func: function
     :return: sorted array in ascending order
     :rtype: list[str]
     """
 
-    def to_idx(elem):
-        """
-        Convert element to index
-
-        :param elem: element in the input array
-        :type elem: int or str
-        :return: corresponding index of given element
-        :rtype: int
-        """
-        if isinstance(elem, str) and len(elem) == 1:
-            return ord(elem)
-        elif isinstance(elem, int):
-            return elem
-        else:
-            raise NotImplementedError
-
     # the output character array that will have sorted arr
-    output = [None for _ in range(num_max)]
+    output = [None for _ in array]
     # create a count array to store count of individual
     # characters and initialize count array as 0
     count = [0 for _ in range(num_max)]
 
     # determine minimum value of input array
-    min_value = to_idx(min(array))
+    min_val = ord_func(min(array))
 
     # store count of each character
     for char in array:
-        count[to_idx(char) - min_value] += 1
+        count[ord_func(char) - min_val] += 1
 
     # change count[i] so that count[i] now contains actual
     # position of this character in output array
@@ -67,8 +72,8 @@ def counting_sort(array, num_max=256):
 
     # build the output character array
     for idx in range(len(array)):
-        output[count[to_idx(array[idx]) - min_value] - 1] = array[idx]
-        count[to_idx(array[idx]) - min_value] -= 1
+        output[count[ord_func(array[idx]) - min_val] - 1] = array[idx]
+        count[ord_func(array[idx]) - min_val] -= 1
 
     return output[:len(array)]
 

@@ -43,7 +43,7 @@ def heap_sort(array):
 class TestHeapSort(unittest.TestCase):
 
     def test_heap_sort(self):
-        val_list = generate_random_array()
+        val_list = generate_random_array(length=10000)
         self.assertListEqual(sorted(val_list), heap_sort(val_list))
 
 
