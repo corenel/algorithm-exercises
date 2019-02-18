@@ -114,7 +114,7 @@ def binary_search_lower_bound(array, target):
         else:
             ub = mid
     # array[index] >= target, min(index)
-    return lb + 1
+    return lb + 1 if lb != -1 else -1
 
 
 def binary_search_upper_bound(array, x):
@@ -185,7 +185,7 @@ class TestBinarySearch(unittest.TestCase):
         val_list = [1, 1, 2, 3, 4, 5, 6, 6, 7, 8, 9]
         self.assertEqual(6, binary_search_lower_bound(val_list, 6))
         self.assertEqual(11, binary_search_lower_bound(val_list, 10))
-        self.assertEqual(0, binary_search_lower_bound(val_list, 0))
+        self.assertEqual(-1, binary_search_lower_bound(val_list, 0))
 
     def test_binary_search_upper_bound(self):
         # normal search
@@ -200,7 +200,7 @@ class TestBinarySearch(unittest.TestCase):
         val_list = [1, 1, 2, 3, 4, 5, 6, 6, 7, 8, 9]
         self.assertEqual(7, binary_search_upper_bound(val_list, 6))
         self.assertEqual(11, binary_search_lower_bound(val_list, 10))
-        self.assertEqual(0, binary_search_lower_bound(val_list, 0))
+        self.assertEqual(-1, binary_search_lower_bound(val_list, 0))
 
 
 if __name__ == '__main__':
