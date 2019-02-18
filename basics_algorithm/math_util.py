@@ -5,6 +5,8 @@ Math Utilities
 """
 
 import unittest
+import math
+import random
 
 
 def fast_pow_iterative(x, n, mod=None):
@@ -73,6 +75,34 @@ def fast_pow_recursive(x, n):
         return tmp * tmp / x
 
 
+def gcd(a, b):
+    """
+    Get greatest common divisor of given number a and b
+
+    :param a: the first given number
+    :type a: int
+    :param b: the second given number
+    :type b: int
+    :return: greatest common divisor
+    :rtype: int
+    """
+    return gcd(b, a % b) if b != 0 else a
+
+
+def lcm(a, b):
+    """
+    Get least common multiple of given number a and b
+
+    :param a: the first given number
+    :type a: int
+    :param b: the second given number
+    :type b: int
+    :return: least common multiple
+    :rtype: int
+    """
+    return a * b // gcd(a, b)
+
+
 class TestMathUtil(unittest.TestCase):
 
     def test_fast_pow_iterative(self):
@@ -82,6 +112,18 @@ class TestMathUtil(unittest.TestCase):
         self.assertEqual(1234 ** 100, fast_pow_recursive(1234, 100))
         self.assertEqual(2 ** -3, fast_pow_recursive(2, -3))
         self.assertAlmostEqual(2.5 ** 10, fast_pow_recursive(2.5, 10))
+
+    def test_gcd(self):
+        for _ in range(10):
+            a = random.randint(0, 10000)
+            b = random.randint(0, 10000)
+            self.assertEqual(math.gcd(a, b), gcd(a, b))
+
+    def test_lcm(self):
+        for _ in range(10):
+            a = random.randint(0, 10000)
+            b = random.randint(0, 10000)
+            self.assertEqual(a * b / math.gcd(a, b), lcm(a, b))
 
 
 if __name__ == '__main__':
