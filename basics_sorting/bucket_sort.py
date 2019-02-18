@@ -1,15 +1,13 @@
 """
 Bucket Sort
 
-- https://algorithm.yuanbin.me/zh-hans/basics_sorting/heap_sort.html
-- https://www.geeksforgeeks.org/heap-sort/
-- https://algs4.cs.princeton.edu/24pq/
+- https://algorithm.yuanbin.me/zh-hans/basics_sorting/bucket_sort.html - https://www.geeksforgeeks.org/bucket-sort-2/
 """
 
 import unittest
 
 from .insertion_sort import insertion_sort
-from random import uniform
+from .util import generate_uniform_float
 
 
 def bucket_sort(array, num_slot=10):
@@ -57,8 +55,8 @@ def bucket_sort(array, num_slot=10):
 
 class TestBucketSort(unittest.TestCase):
 
-    def test_heap_sort(self):
-        val_list = [uniform(0, 1) for _ in range(10)]
+    def test_bucket_sort(self):
+        val_list = generate_uniform_float()
         self.assertListEqual(sorted(val_list), bucket_sort(val_list))
 
 
