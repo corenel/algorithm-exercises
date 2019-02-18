@@ -52,7 +52,11 @@ def radix_sort(array):
     :return: sorted array in ascending order
     :rtype: list
     """
+    # find the maximum number to know number of digits
     max_val = max(array)
+    # do counting sort for every digit. Note that instead
+    # of passing digit number, exp is passed. exp is 10^i
+    # where i is current digit number
     exp = 1
     while max_val // exp != 0:
         array = counting_sort(
@@ -60,6 +64,7 @@ def radix_sort(array):
             num_max=10,
             ord_func=partial(to_digit, exp=exp))
         exp *= 10
+
     return array
 
 

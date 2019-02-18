@@ -73,6 +73,7 @@ def quick_sort_in_place(array, low, high):
             # equal to pivot, exchange it with the
             # smaller element
             if arr[j] <= pi:
+                # increment index of smaller element
                 i += 1
                 arr[j], arr[i] = arr[i], arr[j]
         # put pivot element to its correct position

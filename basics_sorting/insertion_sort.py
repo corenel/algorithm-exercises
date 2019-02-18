@@ -37,7 +37,7 @@ def insertion_sort(array):
         j = i - 1
         # Move elements of array[0..i-1], that are
         # greater than key, to one position ahead
-        # of their current position to reamin the
+        # of their current position to reaming the
         # correct position for array[i]
         while j >= 0 and key < array[j]:
             array[j + 1] = array[j]
@@ -69,14 +69,24 @@ def shell_sort(array):
     :return: sorted array in ascending order
     :rtype: list
     """
+    # start with a big gap, then reduce the gap
     gap = len(array) // 2
+    # do a gaped insertion sort for this gap size.
+    # the first gap elements a[0..gap-1] are already in gaped
+    # order keep adding one more element until the entire array
+    # is gap sorted
     while gap > 0:
         for i in range(gap, len(array)):
+            # add a[i] to the elements that have been gap sorted
+            # save a[i] in temp and make a hole at position i
             key = array[i]
             j = i - gap
+            # shift earlier gap-sorted elements up until the correct
+            # location for a[i] is found
             while j >= 0 and key < array[j]:
                 array[j + gap] = array[j]
                 j -= gap
+            # put temp (the original a[i]) in its correct location
             array[j + gap] = key
         gap //= 2
     return array

@@ -28,11 +28,16 @@ def selection_sort(array):
     :return: sorted array in ascending order
     :rtype: list
     """
+    # traverse through all array elements
     for i in range(len(array)):
         min_idx = i
+        # find the minimum element in remaining
+        # unsorted array
         for j in range(i + 1, len(array)):
             if array[j] < array[min_idx]:
                 min_idx = j
+        # swap the found minimum element with
+        # the first element
         array[i], array[min_idx] = array[min_idx], array[i]
     return array
 

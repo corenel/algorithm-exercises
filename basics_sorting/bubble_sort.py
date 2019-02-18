@@ -29,8 +29,13 @@ def bubble_sort(array):
     :return: sorted array in ascending order
     :rtype: list
     """
+    # traverse through all array elements
     for i in range(len(array)):
+        # traverse the array from 0 to n-i-1
+        # last i elements are already in place
         for j in range(len(array) - i - 1):
+            # swap if the element found is greater
+            # than the next element
             if array[j] > array[j + 1]:
                 array[j], array[j + 1] = array[j + 1], array[j]
     return array
