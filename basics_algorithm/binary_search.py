@@ -206,6 +206,13 @@ class TestBinarySearch(unittest.TestCase):
         self.assertEqual(11, binary_search_lower_bound(val_list, 10))
         self.assertEqual(0, binary_search_lower_bound(val_list, -1))
 
+    def test_search_for_a_range(self):
+        val_list = [0, 1, 2, 3, 3, 5, 6, 6, 6, 7, 7, 8, 9]
+        lb = binary_search_lower_bound(val_list, 6)
+        ub = binary_search_upper_bound(val_list, 6)
+        self.assertEqual(6, lb)
+        self.assertEqual(8, ub)
+
 
 if __name__ == '__main__':
     unittest.main()
