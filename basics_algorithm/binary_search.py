@@ -114,7 +114,7 @@ def binary_search_lower_bound(array, target):
         else:
             ub = mid
     # array[index] >= target, min(index)
-    return lb + 1 if lb != -1 else -1
+    return lb + 1
 
 
 def binary_search_upper_bound(array, x):
@@ -155,52 +155,56 @@ def binary_search_upper_bound(array, x):
 class TestBinarySearch(unittest.TestCase):
 
     def test_binary_search_recursive(self):
-        length = 100
-        val_list = [i for i in range(length)]
-        for i in range(10):
-            x = randrange(0, length)
-            self.assertEqual(
-                val_list.index(x),
-                binary_search_recursive(val_list, 0, length - 1, x))
+        for length in range(1, 100, 10):
+            val_list = [i for i in range(length)]
+            for i in range(10):
+                x = randrange(0, length)
+                self.assertEqual(
+                    val_list.index(x),
+                    binary_search_recursive(val_list, 0, length - 1, x))
 
     def test_binary_search_iterative(self):
-        length = 100
-        val_list = [i for i in range(length)]
-        for i in range(10):
-            x = randrange(0, length)
-            self.assertEqual(
-                val_list.index(x),
-                binary_search_iterative(val_list, x))
+        for length in range(1, 100, 10):
+            val_list = [i for i in range(length)]
+            for i in range(10):
+                x = randrange(0, length)
+                self.assertEqual(
+                    val_list.index(x),
+                    binary_search_iterative(val_list, x))
 
     def test_binary_search_lower_bound(self):
         # normal search
-        length = 100
-        val_list = [i for i in range(length)]
-        for i in range(10):
-            x = randrange(0, length)
-            self.assertEqual(
-                val_list.index(x),
-                binary_search_lower_bound(val_list, x))
+        for length in range(1, 100, 10):
+            val_list = [i for i in range(length)]
+            for i in range(10):
+                x = randrange(0, length)
+                self.assertEqual(
+                    val_list.index(x),
+                    binary_search_lower_bound(val_list, x))
         # search duplicated number
-        val_list = [1, 1, 2, 3, 4, 5, 6, 6, 7, 8, 9]
+        val_list = [0, 1, 2, 3, 4, 5, 6, 6, 7, 8, 9]
+        self.assertEqual(1, binary_search_lower_bound(val_list, 1))
+        self.assertEqual(10, binary_search_lower_bound(val_list, 9))
         self.assertEqual(6, binary_search_lower_bound(val_list, 6))
         self.assertEqual(11, binary_search_lower_bound(val_list, 10))
-        self.assertEqual(-1, binary_search_lower_bound(val_list, 0))
+        self.assertEqual(0, binary_search_lower_bound(val_list, -1))
 
     def test_binary_search_upper_bound(self):
         # normal search
-        length = 100
-        val_list = [i for i in range(length)]
-        for i in range(10):
-            x = randrange(0, length)
-            self.assertEqual(
-                val_list.index(x),
-                binary_search_upper_bound(val_list, x))
+        for length in range(1, 100, 10):
+            val_list = [i for i in range(length)]
+            for i in range(10):
+                x = randrange(0, length)
+                self.assertEqual(
+                    val_list.index(x),
+                    binary_search_upper_bound(val_list, x))
         # search duplicated number
-        val_list = [1, 1, 2, 3, 4, 5, 6, 6, 7, 8, 9]
+        val_list = [0, 1, 2, 3, 4, 5, 6, 6, 7, 8, 9]
+        self.assertEqual(1, binary_search_lower_bound(val_list, 1))
+        self.assertEqual(10, binary_search_lower_bound(val_list, 9))
         self.assertEqual(7, binary_search_upper_bound(val_list, 6))
         self.assertEqual(11, binary_search_lower_bound(val_list, 10))
-        self.assertEqual(-1, binary_search_lower_bound(val_list, 0))
+        self.assertEqual(0, binary_search_lower_bound(val_list, -1))
 
 
 if __name__ == '__main__':
