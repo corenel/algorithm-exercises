@@ -5,6 +5,8 @@ Knapsack
 
 - https://algorithm.yuanbin.me/zh-hans/basics_algorithm/knapsack.html
 - https://www.geeksforgeeks.org/0-1-knapsack-problem-dp-10/
+- https://www.geeksforgeeks.org/printing-items-01-knapsack/
+- https://www.geeksforgeeks.org/unbounded-knapsack-repetition-items-allowed/
 
 Classical Knapsack Problem
 ---
@@ -163,6 +165,11 @@ def get_knapsack_0_1_solution(w, wt, vt, n):
     for n_idx in range(n, 0, -1):
         if res <= 0:
             break
+        # either the result comes from the
+        # top (dp[i-1][w]) or from (vt[i-1]
+        # + dp[i-1] [w-wt[i-1]]) as in Knapsack
+        # table. If it comes from the latter
+        # one, it means the item is included.
         elif res == dp[n_idx - 1][w_idx]:
             continue
         else:
