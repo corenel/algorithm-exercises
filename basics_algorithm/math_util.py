@@ -103,6 +103,66 @@ def lcm(a, b):
     return a * b // gcd(a, b)
 
 
+def is_prime(n):
+    """
+    Check whether the given number is prime
+
+    :param n: the given number
+    :type n: int
+    :return: whether the given number is prime
+    :rtype: bool
+    """
+    for i in range(2, int(math.sqrt(n))):
+        if n % i == 0:
+            return False
+    return n > 1
+
+
+def sieve(n):
+    """
+    Get prime numbers in the range of [0, n] by
+    the sieve of Eratosthenes algorithm
+
+    :param n: the given number
+    :type n: int
+    :return: list of prime numbers in the range of [0, n]
+    :rtype: list[int]
+    """
+    prime_numebrs = []
+    prime_flags = [True for _ in range(n)]
+    prime_flags[0] = prime_flags[1] = False
+    for i in range(n):
+        if prime_flags[i] and is_prime(i):
+            prime_numebrs.append(i)
+            for j in range(0, n, i):
+                prime_flags[j] = False
+    return prime_numebrs
+
+
+def sieve_range(lb, ub):
+    """
+    Get prime numbers in the range of [lb, ub] by
+    the sieve of Eratosthenes algorithm
+
+    :param lb: lower bound of range
+    :type lb: int
+    :param ub: upper bound of range
+    :type ub: int
+    :return: prime numbers in the range of [lb, ub]
+    :rtype: list[int]
+    """
+    prime_numebrs = []
+    prime_flags = [True for _ in range(ub)]
+    prime_flags[0] = prime_flags[1] = False
+    for i in range(ub):
+        if prime_flags[i] and is_prime(i):
+            if i >= lb:
+                prime_numebrs.append(i)
+            for j in range(0, ub, i):
+                prime_flags[j] = False
+    return prime_numebrs
+
+
 class TestMathUtil(unittest.TestCase):
 
     def test_fast_pow_iterative(self):
@@ -124,6 +184,19 @@ class TestMathUtil(unittest.TestCase):
             a = random.randint(0, 10000)
             b = random.randint(0, 10000)
             self.assertEqual(a * b / math.gcd(a, b), lcm(a, b))
+
+    def test_is_prime(self):
+        self.assertFalse(is_prime(0))
+        self.assertFalse(is_prime(1))
+        self.assertFalse(is_prime(10))
+        self.assertTrue(is_prime(2))
+        self.assertTrue(is_prime(3))
+
+    def test_sieve(self):
+        self.assertListEqual([2, 3, 5, 7, 11, 13, 17, 19], sieve(20))
+
+    def test_sieve_range(self):
+        self.assertListEqual([11, 13, 17, 19], sieve_range(10, 20))
 
 
 if __name__ == '__main__':
