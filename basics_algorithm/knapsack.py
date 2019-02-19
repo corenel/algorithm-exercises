@@ -128,6 +128,50 @@ def knapsack_0_1_dp(w, wt, vt, n):
     return dp[n][w]
 
 
+def get_knapsack_0_1_solution(w, wt, vt, n):
+    """
+    Print solution of 0-1 knapsack problem
+
+    :param w: total capacity
+    :type w: int
+    :param wt: weight of each element
+    :type wt: list[int]
+    :param vt: value of each element
+    :type vt: list[int]
+    :param n: number of elements
+    :type n: int
+    :return: indices of items to achieve maximum value in capacity w
+    :rtype: list[int]
+    """
+    dp = [[0 for _ in range(w + 1)] for _ in range(n + 1)]
+
+    # build table K[][] in bottom up manner
+    for n_idx in range(n + 1):
+        for w_idx in range(w + 1):
+            if n_idx == 0 or w_idx == 0:
+                dp[n_idx][w_idx] = 0
+            elif wt[n_idx - 1] > w:
+                dp[n_idx][w_idx] = dp[n_idx - 1][w_idx]
+            else:
+                dp[n_idx][w_idx] = max(
+                    vt[n_idx - 1] + dp[n_idx - 1][w_idx - wt[n_idx - 1]],
+                    dp[n_idx - 1][w_idx])
+
+    res = dp[n][w]
+    solution = []
+    w_idx = w
+    for n_idx in range(n, 0, -1):
+        if res <= 0:
+            break
+        elif res == dp[n_idx - 1][w_idx]:
+            continue
+        else:
+            solution.append(n_idx - 1)
+            res -= vt[n_idx - 1]
+            w_idx -= wt[n_idx - 1]
+    return solution
+
+
 def knapsack_unbounded(w, wt, vt, n):
     """
     It's an unbounded knapsack problem as we can use 1 or more instances of
@@ -180,6 +224,14 @@ class TestKnapsack(unittest.TestCase):
         vt = [60, 100, 120]
         n = len(vt)
         self.assertEqual(220, knapsack_0_1_dp(w, wt, vt, n))
+
+    def test_get_knapsack_0_1_solution(self):
+        w = 50
+        wt = [10, 20, 30]
+        vt = [60, 100, 120]
+        n = len(vt)
+        # print('item indices: ', sorted(get_knapsack_0_1_solution(w, wt, vt, n)))
+        self.assertListEqual([2, 1], get_knapsack_0_1_solution(w, wt, vt, n))
 
     def test_knapsack_unbounded(self):
         w = 100
